@@ -15,6 +15,9 @@ export function streakFor(entries: EmotionEntry[], emotion: Emotion): number {
   }
   return streak;
 }
+export function growthDaysFor(entries: EmotionEntry[], emotion: Emotion): number {
+  return new Set(entries.filter((item) => item.emotion === emotion).map((item) => item.date)).size;
+}
 export function syncPlants(entries: EmotionEntry[], previous: Plant[] = []): Plant[] {
   return EMOTIONS.filter((emotion) => entries.some((item) => item.emotion === emotion)).map((emotion) => {
     const own = entries.filter((item) => item.emotion === emotion).sort((a, b) => a.date.localeCompare(b.date));
