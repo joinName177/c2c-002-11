@@ -15,12 +15,16 @@ export function streakFor(entries: EmotionEntry[], emotion: Emotion): number {
   }
   return streak;
 }
+export function growthDaysFor(entries: EmotionEntry[], emotion: Emotion): number {
+  return new Set(entries.filter((item) => item.emotion === emotion).map((item) => item.date)).size;
+}
 export function syncPlants(entries: EmotionEntry[], previous: Plant[] = []): Plant[] {
   return EMOTIONS.filter((emotion) => entries.some((item) => item.emotion === emotion)).map((emotion) => {
     const own = entries.filter((item) => item.emotion === emotion).sort((a, b) => a.date.localeCompare(b.date));
     const existing = previous.find((item) => item.emotion === emotion);
     const streak = streakFor(entries, emotion);
-    return { id: existing?.id ?? `plant-${emotion}`, emotion, plantedAt: own[0].date, lastWatered: own[own.length - 1].date, streak, stage: stageFor(streak), status: streak ? '繁茂' : '枯萎', entryIds: own.map((item) => item.id) };
+    const growthDays = growthDaysFor(entries, emotion);
+    return { id: existing?.id ?? `plant-${emotion}`, emotion, plantedAt: own[0].date, lastWatered: own[own.length - 1].date, streak, growthDays, stage: stageFor(streak), status: streak ? '繁茂' : '枯萎', entryIds: own.map((item) => item.id) };
   });
 }
 export function createEntry(emotion: Emotion, note: string, intensity: number, date = new Date().toISOString().slice(0, 10)): EmotionEntry { return { id: `emotion-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, date, emotion, note: note.trim() || EMOTION_META[emotion].hint, intensity: Math.min(5, Math.max(1, Number(intensity) || 3)) }; }

@@ -2,7 +2,7 @@ export type Emotion = '愤怒' | '平静' | '喜悦' | '忧伤' | '焦虑';
 export type GrowthStage = '种子' | '发芽' | '开花' | '结果';
 
 export interface EmotionEntry { id: string; date: string; emotion: Emotion; note: string; intensity: number; }
-export interface Plant { id: string; emotion: Emotion; plantedAt: string; lastWatered: string; streak: number; stage: GrowthStage; status: '繁茂' | '枯萎'; entryIds: string[]; }
+export interface Plant { id: string; emotion: Emotion; plantedAt: string; lastWatered: string; streak: number; growthDays: number; stage: GrowthStage; status: '繁茂' | '枯萎'; entryIds: string[]; }
 export interface GardenSnapshot { entries: EmotionEntry[]; plants: Plant[]; }
 
 export const EMOTIONS: Emotion[] = ['愤怒', '平静', '喜悦', '忧伤', '焦虑'];
